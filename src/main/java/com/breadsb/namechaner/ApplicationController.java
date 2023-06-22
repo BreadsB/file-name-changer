@@ -43,9 +43,11 @@ public class ApplicationController implements Initializable {
     @FXML
     private void onClickChooseDirectoryButton(ActionEvent event) {
         File file = usefulMethods.invokeDirectoryChooser(event);
-        directoryLabel.setText(file.getAbsolutePath());
-        folderPath = Paths.get(file.getAbsolutePath());
-        checkProcessButtonToEnable((int) charNumberSpinner.getValue());
+        if (file != null) {
+            directoryLabel.setText(file.getAbsolutePath());
+            folderPath = Paths.get(file.getAbsolutePath());
+            checkProcessButtonToEnable((int) charNumberSpinner.getValue());
+        }
     }
 
     @FXML
@@ -73,7 +75,10 @@ public class ApplicationController implements Initializable {
         }
         if (fileList.size()>0) {
             UsefulMethods.showAlert(Alert.AlertType.INFORMATION, "List of files to convert", usefulMethods.showFilesAsString(fileList));
-            usefulMethods.renameFiles(fileList, numberChars, folderPath);
+            List<File> wrongFiles = usefulMethods.renameFiles(fileList, numberChars, folderPath);
+            if (wrongFiles.size()>0) {
+                UsefulMethods.showAlert(Alert.AlertType.WARNING, "Not done", wrongFiles.toString());
+            }
             UsefulMethods.showAlert(Alert.AlertType.INFORMATION, "Converted files", usefulMethods.howManyConverted(fileList.size()));
         } else {
             UsefulMethods.showAlert(Alert.AlertType.WARNING, "List of files", "No files inside folder!");

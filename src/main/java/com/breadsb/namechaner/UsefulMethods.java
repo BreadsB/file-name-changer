@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsefulMethods {
@@ -30,12 +31,16 @@ public class UsefulMethods {
         alert.showAndWait();
     }
 
-    public void renameFiles(List<File> fileList, int charNumbers, Path folderPath) {
+    public List<File> renameFiles(List<File> fileList, int charNumbers, Path folderPath) {
+        List<File> doneList = new ArrayList<>();
         for (File oldFile : fileList) {
             String renamed = oldFile.getName().substring(charNumbers);
             File renamedFile = new File(folderPath.toUri() + renamed);
-            oldFile.renameTo(renamedFile);
+            if (!oldFile.renameTo(renamedFile)) {
+                doneList.add(oldFile);
+            }
         }
+        return doneList;
     }
 
     public String showFilesAsString(List<File> fileList) {
