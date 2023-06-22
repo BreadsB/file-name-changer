@@ -7,14 +7,19 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
 
 public class UsefulMethods {
+
+    private final static String INITIAL_DIRECTORY_PATH = "C:\\Users\\Public";
+    private final static String NEW_LINE = System.lineSeparator();
 
     public File invokeDirectoryChooser(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         final DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select directory");
-        directoryChooser.setInitialDirectory(new File("C:\\Users\\Public"));
+        directoryChooser.setInitialDirectory(new File(INITIAL_DIRECTORY_PATH));
         return directoryChooser.showDialog(stage);
     }
 
@@ -23,5 +28,25 @@ public class UsefulMethods {
         alert.setTitle(title);
         alert.setContentText(text);
         alert.showAndWait();
+    }
+
+    public void renameFiles(List<File> fileList, int charNumbers, Path folderPath) {
+        for (File oldFile : fileList) {
+            String renamed = oldFile.getName().substring(charNumbers);
+            File renamedFile = new File(folderPath.toUri() + renamed);
+            oldFile.renameTo(renamedFile);
+        }
+    }
+
+    public String showFiles(List<File> fileList) {
+        StringBuilder sb = new StringBuilder();
+        for (File file : fileList) {
+            sb.append(file.getName()).append(NEW_LINE);
+        }
+        return sb.toString();
+    }
+
+    public String howManyConverted(int size) {
+        return (size == 1) ? "Converted " + size + " file" : "Converted " + size + " files";
     }
 }

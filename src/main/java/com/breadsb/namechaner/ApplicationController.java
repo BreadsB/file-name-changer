@@ -32,7 +32,8 @@ public class ApplicationController implements Initializable {
     public Spinner charNumberSpinner;
     public Button processButton;
     private final UsefulMethods usefulMethods = new UsefulMethods();
-    private String folderPath;
+    private Path folderPath;
+    Integer numberChars;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -43,7 +44,7 @@ public class ApplicationController implements Initializable {
     private void onClickChooseDirectoryButton(ActionEvent event) {
         File file = usefulMethods.invokeDirectoryChooser(event);
         directoryLabel.setText(file.getAbsolutePath());
-        folderPath = file.getAbsolutePath();
+        folderPath = Paths.get(file.getAbsolutePath());
         checkProcessButtonToEnable((int) charNumberSpinner.getValue());
     }
 
@@ -55,22 +56,26 @@ public class ApplicationController implements Initializable {
     private void checkProcessButtonToEnable(int value) {
         if (!directoryLabel.getText().isBlank() && value>0) {
             processButton.setDisable(false);
+            numberChars = value;
         }
     }
 
     @FXML
     private void onProcessButtonClicked() {
-        List<String> pathList = new ArrayList<>();
+        List<File> fileList = new ArrayList<>();
 
-        try (Stream<Path> paths = Files.walk(Paths.get(folderPath))) {
-            pathList = paths.filter(Files::isRegularFile)
-                    .map(path -> path.getFileName().toString())
+        try (Stream<Path> paths = Files.walk(folderPath)) {
+            fileList = paths.filter(Files::isRegularFile)
+                    .map(path -> new File(path.toUri()))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             UsefulMethods.showAlert(Alert.AlertType.ERROR, "Error", "Wrong Path");
         }
-        if (pathList.size()>0) {
-            UsefulMethods.showAlert(Alert.AlertType.INFORMATION, "List of files", pathList.toString());
+        if (fileList.size()>0) {
+            UsefulMethods.showAlert(Alert.AlertType.INFORMATION, "List of files", "Converted " + fileList.size() + " files");
+            usefulMethods.renameFiles(fileList, numberChars, folderPath);
+        } else {
+            UsefulMethods.showAlert(Alert.AlertType.WARNING, "List of files", "No files inside folder!");
         }
     }
 }
