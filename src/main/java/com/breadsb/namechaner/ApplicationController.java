@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
@@ -11,8 +12,17 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ApplicationController implements Initializable {
 
@@ -21,7 +31,8 @@ public class ApplicationController implements Initializable {
     @FXML
     public Spinner charNumberSpinner;
     public Button processButton;
-    Integer numberOfChars;
+    private final UsefulMethods usefulMethods = new UsefulMethods();
+    private String folderPath;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -30,30 +41,36 @@ public class ApplicationController implements Initializable {
 
     @FXML
     private void onClickChooseDirectoryButton(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        final DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select directory");
-        directoryChooser.setInitialDirectory(new File("C:\\Users\\Public"));
-        File file = directoryChooser.showDialog(stage);
+        File file = usefulMethods.invokeDirectoryChooser(event);
         directoryLabel.setText(file.getAbsolutePath());
-        checkProcessButtonToEnable();
+        folderPath = file.getAbsolutePath();
+        checkProcessButtonToEnable((int) charNumberSpinner.getValue());
     }
 
     @FXML
     private void onSpinnerValueChanged() {
-        numberOfChars = (int) charNumberSpinner.getValue();
-        checkProcessButtonToEnable();
+        checkProcessButtonToEnable((int) charNumberSpinner.getValue());
     }
 
-    private void checkProcessButtonToEnable() {
-        if (!directoryLabel.getText().isBlank() && numberOfChars!=null) {
+    private void checkProcessButtonToEnable(int value) {
+        if (!directoryLabel.getText().isBlank() && value>0) {
             processButton.setDisable(false);
         }
     }
 
     @FXML
     private void onProcessButtonClicked() {
-//        get All Files as List
-//        Change all files name
+        List<String> pathList = new ArrayList<>();
+
+        try (Stream<Path> paths = Files.walk(Paths.get(folderPath))) {
+            pathList = paths.filter(Files::isRegularFile)
+                    .map(path -> path.getFileName().toString())
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            UsefulMethods.showAlert(Alert.AlertType.ERROR, "Error", "Wrong Path");
+        }
+        if (pathList.size()>0) {
+            UsefulMethods.showAlert(Alert.AlertType.INFORMATION, "List of files", pathList.toString());
+        }
     }
 }
