@@ -6,10 +6,7 @@ import com.breadsb.namechaner.helpers.FileHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -27,7 +23,7 @@ import java.util.stream.Stream;
 public class ApplicationController implements Initializable {
 
     @FXML
-    public TextField directoryLabel;
+    public Label directoryTextField;
     @FXML
     public Spinner charNumberSpinner;
     @FXML
@@ -47,7 +43,7 @@ public class ApplicationController implements Initializable {
     private void onClickChooseDirectoryButton(ActionEvent event) {
         File file = dch.invokeDirectoryChooser(event);
         if (file != null) {
-            directoryLabel.setText(file.getAbsolutePath());
+            directoryTextField.setText(file.getAbsolutePath());
             folderPath = Paths.get(file.getAbsolutePath());
             checkProcessButtonToEnable(numberOfCharsToRemove);
         }
@@ -69,15 +65,13 @@ public class ApplicationController implements Initializable {
         } catch (IOException e) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, "Error", "Wrong Path");
         }
-        if (fileList.size()>0) {
-            fh.renameFiles(fileList, numberOfCharsToRemove, folderPath);
-        } else {
-            AlertHelper.showAlert(Alert.AlertType.WARNING, "List of files", "No files inside folder!");
-        }
+
+        fh.renameFiles(fileList, numberOfCharsToRemove, folderPath);
     }
 
     private void checkProcessButtonToEnable(int value) {
-        if (!directoryLabel.getText().isBlank() && value>0) {
+        File file = new File(directoryTextField.getText());
+        if (file.isDirectory() && value>0) {
             processButton.setDisable(false);
         }
     }

@@ -11,22 +11,26 @@ public class FileHelper {
     private final static String NEW_LINE = System.lineSeparator();
 
     public void renameFiles(List<File> fileList, int charNumbers, Path folderPath) {
-        AlertHelper.showAlert(Alert.AlertType.INFORMATION, "List of files to convert", showFilesAsString(fileList));
+        if(fileList.size()>0) {
+            AlertHelper.showAlert(Alert.AlertType.INFORMATION, "List of files to convert", showFilesAsString(fileList));
 
-        boolean done = false;
-        String renamed = "";
-        File renamedFile;
+            boolean done = false;
+            String renamed = "";
+            File renamedFile;
 
-        for (File oldFile : fileList) {
-            if (oldFile.getName().length() < charNumbers) {
-                AlertHelper.showAlert(Alert.AlertType.ERROR,
-                        "Error at converting " + oldFile.getName(),
-                        "Characters to remove must be less than " + oldFile.getName().length());
-                break;
+            for (File oldFile : fileList) {
+                if (removeExtension(oldFile).length() < charNumbers) {
+                    AlertHelper.showAlert(Alert.AlertType.ERROR,
+                            "Error at converting " + oldFile.getName(),
+                            "Characters to remove must be less than " + removeExtension(oldFile).length());
+                    break;
+                }
+                renamed = oldFile.getName().substring(charNumbers);
+                renamedFile = new File(folderPath.toString() + "\\" + renamed);
+                done = oldFile.renameTo(renamedFile);
             }
-            renamed = oldFile.getName().substring(charNumbers);
-            renamedFile = new File(folderPath.toString() + "\\" + renamed);
-            done = oldFile.renameTo(renamedFile);
+        }   else {
+            AlertHelper.showAlert(Alert.AlertType.WARNING, "List of files", "No files inside folder!");
         }
     }
 
@@ -38,9 +42,7 @@ public class FileHelper {
         return sb.toString();
     }
 
-    private String howManyConverted(int sizeConverted) {
-        return (sizeConverted == 1) ?
-                "Converted " + sizeConverted + " file" :
-                "Converted " + sizeConverted + " files";
+    private String removeExtension(File file) {
+        return file.getName().substring(0, file.getName().lastIndexOf("."));
     }
 }
