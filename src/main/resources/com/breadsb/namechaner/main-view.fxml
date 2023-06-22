@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.breadsb.namechaner.ApplicationController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <HBox alignment="CENTER" prefWidth="200.0">
+         <children>
+            <TextField fx:id="directoryLabel" maxWidth="200.0" prefWidth="200.0" />
+            <Button fx:id="chooseDirectoryButton" mnemonicParsing="false" text="Choose directory">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefWidth="200.0">
+         <children>
+            <Label text="How many characters to remove?" />
+            <Spinner fx:id="charNumber" accessibleHelp="Type number of characters program has to remove from file name" editable="true" maxWidth="60.0" prefWidth="60.0">
+               <valueFactory>
+                  <SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="0" max="50" min="0" />
+               </valueFactory>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Spinner>
+         </children>
+      </HBox>
+      <Button fx:id="processButton" alignment="CENTER" disable="true" mnemonicParsing="false" text="Process" textAlignment="CENTER" />
+   </children>
+</VBox>
