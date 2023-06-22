@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.breadsb.namechaner.ApplicationController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -20,7 +21,7 @@
       </HBox>
       <HBox alignment="CENTER" prefWidth="200.0">
          <children>
-            <Label text="How many characters to remove?" />
+            <Label text="How many characters to remove? (from left)" />
             <Spinner fx:id="charNumberSpinner" accessibleHelp="Type number of characters program has to remove from file name" editable="true" maxWidth="60.0" prefWidth="60.0">
                <valueFactory>
                   <SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="18" max="50" min="0" />
@@ -31,6 +32,7 @@
             </Spinner>
          </children>
       </HBox>
-      <Button fx:id="processButton" alignment="CENTER" disable="true" mnemonicParsing="false" text="Process" textAlignment="CENTER" onMouseClicked="#onProcessButtonClicked"/>
+      <Button fx:id="processButton" alignment="CENTER" disable="true" mnemonicParsing="false" onMouseClicked="#onProcessButtonClicked" text="Process" textAlignment="CENTER" />
+      <Label fx:id="copyrights" />
    </children>
 </VBox>
