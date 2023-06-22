@@ -72,8 +72,9 @@ public class ApplicationController implements Initializable {
             UsefulMethods.showAlert(Alert.AlertType.ERROR, "Error", "Wrong Path");
         }
         if (fileList.size()>0) {
-            UsefulMethods.showAlert(Alert.AlertType.INFORMATION, "List of files", "Converted " + fileList.size() + " files");
+            UsefulMethods.showAlert(Alert.AlertType.INFORMATION, "List of files to convert", usefulMethods.showFilesAsString(fileList));
             usefulMethods.renameFiles(fileList, numberChars, folderPath);
+            UsefulMethods.showAlert(Alert.AlertType.INFORMATION, "Converted files", usefulMethods.howManyConverted(fileList.size()));
         } else {
             UsefulMethods.showAlert(Alert.AlertType.WARNING, "List of files", "No files inside folder!");
         }

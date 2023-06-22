@@ -38,7 +38,7 @@ public class UsefulMethods {
         }
     }
 
-    public String showFiles(List<File> fileList) {
+    public String showFilesAsString(List<File> fileList) {
         StringBuilder sb = new StringBuilder();
         for (File file : fileList) {
             sb.append(file.getName()).append(NEW_LINE);
