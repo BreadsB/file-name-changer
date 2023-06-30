@@ -7,7 +7,7 @@
     <groupId>com.breadsb</groupId>
     <artifactId>nameChanger</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>nameChaner</name>
+    <name>nameChanger</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,13 +60,112 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.breadsb.namechaner/com.breadsb.namechaner.Application</mainClass>
+                            <mainClass>com.breadsb.namechanger/com.breadsb.namechanger.Application</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.Final</version>
+                <executions>
+                    <execution>
+                        <id>generate-module-info</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.example</groupId>
+                                        <artifactId>example-core</artifactId>
+                                        <version>1.0.0.Final</version>
+                                    </artifact>
+                                    <additionalDependencies>
+                                        <dependency>
+                                            <groupId>com.example</groupId>
+                                            <artifactId>example-extended</artifactId>
+                                            <version>1.0.0.Final</version>
+                                        </dependency>
+                                    </additionalDependencies>
+                                    <moduleInfo>
+                                        <name>com.example.core</name>
+                                        <exports>
+                                            !com.example.core.internal*;
+                                            *;
+                                        </exports>
+                                        <requires>
+                                            static com.some.optional.dependency;
+                                            !com.excluded.dependency;
+                                            *;
+                                        </requires>
+                                        <opens>
+                                            com.example.core.internal.controller to javafx.fxml;
+                                        </opens>
+                                        <opensResources>
+                                            com.example.resource;
+                                            com.example.resource.icon;
+                                            com.example.resource.sound;
+                                        </opensResources>
+                                        <uses>
+                                            com.example.SomeService;
+                                        </uses>
+                                        <provides>
+                                            com.example.SomeService with com.example.SomeServiceImpl1,com.example.SomeServiceImpl2;
+                                        </provides>
+                                        <addServiceUses>true</addServiceUses>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    ...
+                                </module>
+                            </modules>
+                            <jdepsExtraArgs>
+                                <arg>--upgrade-module-path=...</arg>
+                            </jdepsExtraArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.Final</version>
+                <executions>
+                    <execution>
+                        <id>add-module-infos</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <jvmVersion>11</jvmVersion>
+                            <failOnWarning>false</failOnWarning>
+                            <outputTimestamp>1980-01-01T00:00:02Z</outputTimestamp>
+                            <module>
+                                <moduleInfo>
+                                    <name>com.example</name>
+                                    <exports>
+                                        !com.example.internal.*;
+                                        *;
+                                    </exports>
+                                </moduleInfo>
+                            </module>
+                            <exclusions>
+                                <exclusion>
+                                    <groupId>com.acme</groupId>
+                                    <artifactId>thing</artifactId>
+                                </exclusion>
+                            </exclusions>
                         </configuration>
                     </execution>
                 </executions>

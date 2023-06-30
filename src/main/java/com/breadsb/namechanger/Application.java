@@ -1,4 +1,4 @@
-package com.breadsb.namechaner;
+package com.breadsb.namechanger;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

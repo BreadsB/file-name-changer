@@ -1,4 +1,4 @@
-package com.breadsb.namechaner.helpers;
+package com.breadsb.namechanger.helpers;
 
 import javafx.scene.control.Alert;
 

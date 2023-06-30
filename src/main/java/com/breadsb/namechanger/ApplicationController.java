@@ -1,8 +1,8 @@
-package com.breadsb.namechaner;
+package com.breadsb.namechanger;
 
-import com.breadsb.namechaner.helpers.AlertHelper;
-import com.breadsb.namechaner.helpers.DirectoryChooserHelper;
-import com.breadsb.namechaner.helpers.FileHelper;
+import com.breadsb.namechanger.helpers.AlertHelper;
+import com.breadsb.namechanger.helpers.DirectoryChooserHelper;
+import com.breadsb.namechanger.helpers.FileHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
