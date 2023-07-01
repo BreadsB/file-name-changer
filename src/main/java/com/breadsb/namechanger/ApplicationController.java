@@ -28,6 +28,11 @@ public class ApplicationController implements Initializable {
     public Spinner charNumberSpinner;
     @FXML
     public Button processButton;
+    @FXML
+    public RadioButton leftSideRadio;
+    @FXML
+    public RadioButton rightSideRadio;
+
     private final DirectoryChooserHelper dch = new DirectoryChooserHelper();
     private final FileHelper fh = new FileHelper();
     public static int numberOfCharsToRemove = 18;
@@ -79,4 +84,6 @@ public class ApplicationController implements Initializable {
     private void updateSpinner() {
         numberOfCharsToRemove = (int) charNumberSpinner.getValue();
     }
+
+
 }

@@ -32,6 +32,12 @@
             </Spinner>
          </children>
       </HBox>
+      <HBox alignment="CENTER" prefWidth="200.0" spacing="50.0">
+         <children>
+            <RadioButton fx:id="leftSideRadio" mnemonicParsing="false" text="Left side" />
+            <RadioButton fx:id="rightSideRadio" mnemonicParsing="false" text="Right side" />
+         </children>
+      </HBox>
       <Button fx:id="processButton" alignment="CENTER" disable="true" mnemonicParsing="false" onMouseClicked="#onProcessButtonClicked" text="Process" textAlignment="CENTER" />
       <Label fx:id="copyrights" />
    </children>
