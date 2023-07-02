@@ -21,7 +21,7 @@
       </HBox>
       <HBox alignment="CENTER" prefWidth="200.0">
          <children>
-            <Label text="How many characters to remove? (from left)" />
+            <Label text="How many characters to remove?" />
             <Spinner fx:id="charNumberSpinner" accessibleHelp="Type number of characters program has to remove from file name" editable="true" maxWidth="60.0" prefWidth="60.0">
                <valueFactory>
                   <SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="18" max="50" min="0" />

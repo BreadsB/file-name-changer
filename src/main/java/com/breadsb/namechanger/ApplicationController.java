@@ -1,5 +1,6 @@
 package com.breadsb.namechanger;
 
+import com.breadsb.namechanger.helpers.AlertHelper;
 import com.breadsb.namechanger.helpers.DirectoryChooserHelper;
 import com.breadsb.namechanger.helpers.FileHelper;
 import javafx.event.ActionEvent;
@@ -60,7 +61,8 @@ public class ApplicationController implements Initializable {
         boolean haveFileNamesSufficientLength = fh.checkFileNamesHaveSufficientLength(fileList, numberOfCharsToRemove);
         if (haveFileNamesSufficientLength) {
             boolean cuttingCharsFromLeft = cutCharsFromLeft();
-            fh.renameFiles(fileList, numberOfCharsToRemove, folderPath, cuttingCharsFromLeft);
+            int numberOfConvertedFiles = fh.renameFiles(fileList, numberOfCharsToRemove, folderPath, cuttingCharsFromLeft);
+            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, "Name conversion successful", "Converted " + numberOfConvertedFiles + " files");
         }
     }
 

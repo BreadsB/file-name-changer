@@ -10,23 +10,26 @@ public class FileHelper {
 
     private final static String NEW_LINE = System.lineSeparator();
 
-    public void renameFiles(List<File> fileList, int charNumbers, Path folderPath, boolean leftSide) {
+    public int renameFiles(List<File> fileList, int charNumbers, Path folderPath, boolean leftSide) {
         System.out.println("Cutting chars from left: " + leftSide);
-        String cuttedName;
-        String extension;
+        String cuttedName, extension;
+        int converted = 0;
         boolean done;
         if (leftSide) {
             for (File file : fileList) {
                 cuttedName = file.getName().substring(charNumbers);
                 done = file.renameTo(new File(folderPath+"\\"+cuttedName));
+                if (done) converted++;
             }
         } else {
             for (File file : fileList) {
                 cuttedName = file.getName().substring(0, (removeExtension(file).length()-charNumbers) );
                 extension = file.getName().substring(file.getName().lastIndexOf("."));
                 done = file.renameTo(new File(folderPath+"\\"+cuttedName+extension));
+                if (done) converted++;
             }
         }
+        return converted;
     }
 
     private String showFilesAsString(List<File> fileList) {
